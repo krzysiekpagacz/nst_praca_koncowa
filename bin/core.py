@@ -15,8 +15,11 @@ flow length (in packets) and flow size (in bytes)
 
 import pandas as pd
 import numpy as np
+import matplotlib
 import os
 import sys
+
+from bin.charts import bytes_per_protocol_chart
 
 INPUT_FILES: str = 'netflow_csv'
 
@@ -35,17 +38,17 @@ def get_data():
 	return out
 
 def bytes_per_protocol(df):
-	protocols = {}
 	if isinstance(df, pd.DataFrame):
-		arr = df.to_numpy()
-		print(type(df))
+		protocols = df.groupby(['pr'], as_index=False)['ibyt'].sum()
+		print(protocols)
 	else:
 		print('something went wrong with import data, passed object is not a dataframe')
 		sys.exit()
+	return protocols.to_dict()
 
 
 if __name__ == '__main__':
     df = get_data()
-    # print(df.shape)
-    bytes_per_protocol(df)
+    bpp = bytes_per_protocol(df)
+    # bytes_per_protocol_chart(bpp)
 
