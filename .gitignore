@@ -142,3 +142,6 @@ cython_debug/
 
 #ignore csv files
 *.csv
+
+#ignore pdf files
+*.pdf

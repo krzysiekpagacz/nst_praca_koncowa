@@ -19,7 +19,7 @@ import matplotlib
 import os
 import sys
 
-from bin.charts import bytes_per_protocol_chart
+from bin.charts import bytes_per_L4_protocol_chart
 
 INPUT_FILES: str = 'netflow_csv'
 
@@ -37,18 +37,20 @@ def get_data():
 	out = pd.concat(li, axis=0, ignore_index=True)
 	return out
 
-def bytes_per_protocol(df):
+def bytes_per_L4_protocol(df):
 	if isinstance(df, pd.DataFrame):
+		df = df[df.pr.isin(['TCP', 'UDP'])]
 		protocols = df.groupby(['pr'], as_index=False)['ibyt'].sum()
 		print(protocols)
+		print(type(protocols))
 	else:
 		print('something went wrong with import data, passed object is not a dataframe')
 		sys.exit()
-	return protocols.to_dict()
+	return protocols
 
 
 if __name__ == '__main__':
     df = get_data()
-    bpp = bytes_per_protocol(df)
-    # bytes_per_protocol_chart(bpp)
+    bpp = bytes_per_L4_protocol(df)
+    bytes_per_L4_protocol_chart(bpp)
 
