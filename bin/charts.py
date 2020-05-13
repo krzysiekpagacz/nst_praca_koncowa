@@ -19,8 +19,7 @@ def bytes_per_L4_protocol_chart(input_data):
     axs.bar(protocols, bytes)
     # fig.subtitle('Bytes per Protocols of Transport Layer')
     axs.legend()
-    plt.show()
-    fig.savefig("foo.pdf", bbox_inches='tight')
+    fig.savefig('Distribution of Bytes per Transport Layer Protocols', bbox_inches='tight')
 
 
 

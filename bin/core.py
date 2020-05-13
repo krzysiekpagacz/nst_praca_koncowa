@@ -19,16 +19,18 @@ import matplotlib
 import os
 import sys
 
+from bin.protocols_bytes_chart import bar_of_pie_protocols_chart
 from bin.charts import bytes_per_L4_protocol_chart
 
 INPUT_FILES: str = 'netflow_csv'
 
+
 def get_data():
 	li = []
-	with os.scandir('../../'+INPUT_FILES) as entries:
+	with os.scandir('../../' + INPUT_FILES) as entries:
 		for entry in entries:
 			try:
-				df = pd.read_csv('../../'+INPUT_FILES+'/' + entry.name, index_col=0, sep=',', low_memory=False)
+				df = pd.read_csv('../../' + INPUT_FILES + '/' + entry.name, index_col=0, sep=',', low_memory=False)
 				print(f'File name: {entry.name}, Rows: {df.shape[0]}')
 				li.append(df)
 			except FileNotFoundError:
@@ -36,6 +38,7 @@ def get_data():
 				sys.exit()
 	out = pd.concat(li, axis=0, ignore_index=True)
 	return out
+
 
 def bytes_per_L4_protocol(df):
 	if isinstance(df, pd.DataFrame):
@@ -49,8 +52,24 @@ def bytes_per_L4_protocol(df):
 	return protocols
 
 
-if __name__ == '__main__':
-    df = get_data()
-    bpp = bytes_per_L4_protocol(df)
-    bytes_per_L4_protocol_chart(bpp)
+def bytes_per_protocols(df):
+	if isinstance(df, pd.DataFrame):
+		new_df = df.groupby(['pr'], as_index=False)['ibyt'].sum()
+	else:
+		print('something went wrong with import data, passed object is not a dataframe')
+		sys.exit()
+	temp_list = new_df.to_dict(orient='records')
+	protocols = {}
+	for item_dict in temp_list:
+		new_key = list(item_dict.values())[0]
+		new_value = list(item_dict.values())[1]
+		protocols[new_key] = new_value
+	return protocols
 
+
+if __name__ == '__main__':
+	df = get_data()
+	bpp = bytes_per_L4_protocol(df)
+	bytes_per_L4_protocol_chart(bpp)
+	bpp_all = bytes_per_protocols(df)
+	bar_of_pie_protocols_chart(bpp_all)
