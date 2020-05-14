@@ -19,28 +19,30 @@ import matplotlib
 import os
 import sys
 
-from bin.protocols_bytes_chart import bar_of_pie_protocols_chart
+from bin.config import INPUT_FILES
+from bin.pdf_generator import generate_pdf_file
+from bin.charts import bar_of_pie_protocols_chart
 from bin.charts import bytes_per_L4_protocol_chart
-
-INPUT_FILES: str = 'netflow_csv'
 
 
 def get_data():
 	li = []
+	input_files = []
 	with os.scandir('../../' + INPUT_FILES) as entries:
 		for entry in entries:
 			try:
 				df = pd.read_csv('../../' + INPUT_FILES + '/' + entry.name, index_col=0, sep=',', low_memory=False)
 				print(f'File name: {entry.name}, Rows: {df.shape[0]}')
 				li.append(df)
+				input_files.append(entry.name)
 			except FileNotFoundError:
 				print('check path to file or file name')
 				sys.exit()
 	out = pd.concat(li, axis=0, ignore_index=True)
-	return out
+	return out, input_files
 
 
-def bytes_per_L4_protocol(df):
+def bytes_per_l4_protocol(df):
 	if isinstance(df, pd.DataFrame):
 		df = df[df.pr.isin(['TCP', 'UDP'])]
 		protocols = df.groupby(['pr'], as_index=False)['ibyt'].sum()
@@ -68,8 +70,11 @@ def bytes_per_protocols(df):
 
 
 if __name__ == '__main__':
-	df = get_data()
-	bpp = bytes_per_L4_protocol(df)
+	input_data = get_data()
+	df = input_data[0]
+	bpp = bytes_per_l4_protocol(df)
 	bytes_per_L4_protocol_chart(bpp)
 	bpp_all = bytes_per_protocols(df)
 	bar_of_pie_protocols_chart(bpp_all)
+	generate_pdf_file(input_data[1])
+
