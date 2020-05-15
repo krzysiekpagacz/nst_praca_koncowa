@@ -1,21 +1,4 @@
-"""
-In our research, flow is defined as a unidirectional se-
-quence of packets that share the same five-tuple: IP source
-address, IP destination address, source port, destination
-port, and transport layer protocol type
-
-elephant and mice flows
-
-extract models of flow length and size
-
-flow length (in packets) and flow size (in bytes)
-
-
-"""
-
 import pandas as pd
-import numpy as np
-import matplotlib
 import os
 import sys
 
@@ -26,6 +9,12 @@ from bin.charts import bytes_per_L4_protocol_chart
 
 
 def get_data():
+	"""
+    functions gets data from fodler ../../netflow_csv, by importing file by file into datafram object
+    imported files have to be of csv file type
+
+	:return: tuple with dataframe and files name stored in the folder ../../netflow_csv
+	"""
 	li = []
 	input_files = []
 	with os.scandir('../../' + INPUT_FILES) as entries:
@@ -42,36 +31,32 @@ def get_data():
 	return out, input_files
 
 
-def bytes_per_l4_protocol(df):
-	if isinstance(df, pd.DataFrame):
+def bytes_per_protocols(df, transport_protocols=False):
+	"""
+	:param df: input dataframe
+	:param transport_protocols: when True only TCP and UDP protocols taken into consideration
+	:return: dictionary with protocol name as a key and number of bytes as a value
+	"""
+	protocols = {}
+	if transport_protocols:
 		df = df[df.pr.isin(['TCP', 'UDP'])]
 		protocols = df.groupby(['pr'], as_index=False)['ibyt'].sum()
-		print(protocols)
-		print(type(protocols))
 	else:
-		print('something went wrong with import data, passed object is not a dataframe')
-		sys.exit()
-	return protocols
-
-
-def bytes_per_protocols(df):
-	if isinstance(df, pd.DataFrame):
-		new_df = df.groupby(['pr'], as_index=False)['ibyt'].sum()
-	else:
-		print('something went wrong with import data, passed object is not a dataframe')
-		sys.exit()
-	temp_list = new_df.to_dict(orient='records')
-	protocols = {}
-	for item_dict in temp_list:
-		new_key = list(item_dict.values())[0]
-		new_value = list(item_dict.values())[1]
-		protocols[new_key] = new_value
+	    try:
+		    new_df = df.groupby(['pr'], as_index=False)['ibyt'].sum()
+	    except KeyError:
+		    print(f'missing column in input dataframe')
+	    temp_list = new_df.to_dict(orient='records')
+	    for item_dict in temp_list:
+		    new_key = list(item_dict.values())[0]
+		    new_value = list(item_dict.values())[1]
+		    protocols[new_key] = new_value
 	return protocols
 
 
 def dest_ports(df, get_results=10):
 	"""
-	:param df: input data
+	:param df: input dataframe
 	:param get_results: number of analyzed ports (in descending order in terms of connections number)
 	:return: dictionary with port number and number of connections
 	"""
@@ -80,10 +65,8 @@ def dest_ports(df, get_results=10):
 		df = df[~df.dp.isin(['0','21548'])]
 		df = df.loc[df.dp<49152]
 		new_df = df.groupby(['dp'], as_index=False)['sa'].count().sort_values(by='sa', ascending=False)[:get_results]
-		# print(new_df.head(20))
-		print(type(new_df))
 	except KeyError:
-		print(f'missing column dp in input dataframe')
+		print(f'missing column in input dataframe')
 	temp_list = new_df.to_dict(orient='records')
 	for item in temp_list:
 		new_key = list(item.values())[0]
@@ -93,21 +76,11 @@ def dest_ports(df, get_results=10):
 	return ports
 
 
-# def avg_duration(df):
-# 	try:
-# 		arr = df['td'].values
-# 		print(type(arr))
-# 		avg_td = np.average(arr)
-# 		print(f'avg_td: {avg_td}')
-# 	except KeyError:
-# 		print(f'missing column td in input dataframe')
-
-
 if __name__ == '__main__':
 	input_data = get_data()
 	df = input_data[0]
 	dest_ports_chart(dest_ports(df))
-	bpp = bytes_per_l4_protocol(df)
+	bpp = bytes_per_protocols(df, transport_protocols=True)
 	bytes_per_L4_protocol_chart(bpp)
 	bpp_all = bytes_per_protocols(df)
 	bar_of_pie_protocols_chart(bpp_all)
