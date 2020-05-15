@@ -4,7 +4,8 @@ import os
 
 from matplotlib.patches import ConnectionPatch
 
-from bin.config import PROTOCOLS_CHART_NAME, L4_PROTOCOLS_CHART_NAME, CHARTS_FOLDER
+from bin.config import PROTOCOLS_CHART_NAME, L4_PROTOCOLS_CHART_NAME, CHARTS_FOLDER, PROTOCOLS_CHART_TITLE, \
+    L4_PROTOCOLS_CHART_TITLE, DEST_PORTS_CHART_TITLE, DEST_PORTS_X_LABEL, DEST_PORTS_CHART_NAME, PORT_NAME, COLORS
 
 
 def bytes_per_L4_protocol_chart(input_data):
@@ -18,8 +19,8 @@ def bytes_per_L4_protocol_chart(input_data):
     except KeyError:
         print('missing column ibyt')
     fig, axs = plt.subplots()
-    axs.bar(protocols, bytes)
-    axs.legend()
+    axs.bar(protocols, bytes, color=COLORS)
+    axs.set_title(L4_PROTOCOLS_CHART_TITLE)
     fig.savefig(os.path.join(CHARTS_FOLDER+L4_PROTOCOLS_CHART_NAME), bbox_inches='tight')
 
 def bar_of_pie_protocols_chart(input_data):
@@ -28,7 +29,6 @@ def bar_of_pie_protocols_chart(input_data):
     bytes_sum_others = 0
     ratio_tcp = 0
     ratio_udp = 0
-    ratio_others = 0
     legend_others = []
     #sum number of bytes
     for key, value in input_data.items():
@@ -57,13 +57,12 @@ def bar_of_pie_protocols_chart(input_data):
     angle = -180 * ratios[0]
     ax1.pie(ratios, autopct='%1.2f%%', startangle=angle,
             labels=labels, explode=explode)
-    ax1.set_title('Distribution of bytes among protocols.')
+    ax1.set_title(PROTOCOLS_CHART_TITLE)
     # bar chart parameters
     xpos = 0
     bottom = 0
     ratios = []
     width = .2
-    colors = ['#1531d1', '#fa1616', '#3cd113', '#f6fa16', '#b515d1', '#15a2d1', '#2b15d1', '#d1158c','#15d183' ]
     print(protocol_ratio_others)
     for key, value in protocol_ratio_others.items():
         if value>1:
@@ -72,7 +71,7 @@ def bar_of_pie_protocols_chart(input_data):
 
     for j in range(len(ratios)):
         height = ratios[j]
-        ax2.bar(xpos, height, width, bottom=bottom, color=colors[j])
+        ax2.bar(xpos, height, width, bottom=bottom, color=COLORS[j])
         ypos = bottom + ax2.patches[j].get_height() / 2
         bottom += height
         ax2.text(xpos, ypos, "%d%%" % (ax2.patches[j].get_height()),
@@ -106,6 +105,29 @@ def bar_of_pie_protocols_chart(input_data):
                 'Note! Protocols with share less than 1% among the other protocols (not TCP or UDP) have been skipped',
                 horizontalalignment='right')
     fig.savefig(os.path.join(CHARTS_FOLDER+PROTOCOLS_CHART_NAME), bbox_inches='tight')
+
+
+def dest_ports_chart(ports):
+    plt.rcdefaults()
+    fig, ax = plt.subplots()
+    services = []
+    conn = []
+    for key, value in ports.items():
+        services.append(PORT_NAME.get(key, -1.0))
+        conn.append(value)
+
+    y_pos = np.arange(len(services))
+    x_axis = conn
+
+    ax.barh(y_pos, x_axis, align='center', color=COLORS)
+    ax.set_yticks(y_pos)
+    ax.set_yticklabels(services)
+    ax.invert_yaxis()
+    ax.set_xlabel(DEST_PORTS_X_LABEL)
+    ax.set_title(DEST_PORTS_CHART_TITLE)
+
+    fig.savefig(os.path.join(CHARTS_FOLDER + DEST_PORTS_CHART_NAME), bbox_inches='tight')
+
 
 
 
