@@ -1,12 +1,12 @@
-from time import strptime
+from datetime import datetime
 
 import pandas as pd
 import os
 import sys
 
-from bin.config import INPUT_FILES, PORT_NAME
+from bin.config import INPUT_FILES, PORT_NAME, SUMMARY_OPTIONS
 from bin.pdf_generator import generate_pdf_file
-from bin.charts import bar_of_pie_protocols_chart, dest_ports_chart
+from bin.charts import bar_of_pie_protocols_chart, dest_ports_chart, get_summary_chart
 from bin.charts import bytes_per_L4_protocol_chart
 
 
@@ -85,7 +85,7 @@ def get_summary(files_count=1):
 	function takes only the last row from each CSV file, which is the summary of the 5 minutes measure cycle
 	:param files_count: number of files to import
 	:return: data frame with following columns:
-	- date
+	- date - column of type datetime
 	- flows
 	- bytes
 	- packets
@@ -115,17 +115,20 @@ def get_summary(files_count=1):
 			except FileNotFoundError:
 				print('check path to file or file name')
 	out = pd.concat(dfs, axis=0, ignore_index=True)
-	out['date'] = out['date'].apply(lambda x: strptime(x, '%Y%m%d%H%M'))
+	out['date'] = out['date'].apply(lambda x: datetime.strptime(x, '%Y%m%d%H%M'))
 	return out
 
 
 if __name__ == '__main__':
-	# input_data = get_data(files_count=1)
-	# df = input_data[0]
-	# dest_ports_chart(dest_ports(df))
-	# bpp = bytes_per_protocols(df, transport_protocols=True)
-	# bytes_per_L4_protocol_chart(bpp)
-	# bpp_all = bytes_per_protocols(df)
-	# bar_of_pie_protocols_chart(bpp_all)
-	# generate_pdf_file(input_data[1])
-	test = get_summary()
+	input_data = get_data(files_count=1)
+	df = input_data[0]
+	dest_ports_chart(dest_ports(df))
+	bpp = bytes_per_protocols(df, transport_protocols=True)
+	bytes_per_L4_protocol_chart(bpp)
+	bpp_all = bytes_per_protocols(df)
+	bar_of_pie_protocols_chart(bpp_all)
+	for sum in SUMMARY_OPTIONS:
+		print(sum)
+		get_summary_chart(get_summary(2), option=sum)
+	generate_pdf_file(input_data[1])
+

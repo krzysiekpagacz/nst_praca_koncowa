@@ -1,11 +1,14 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+import pandas as pd
+from datetime import datetime
 
 from matplotlib.patches import ConnectionPatch
 
 from bin.config import PROTOCOLS_CHART_NAME, L4_PROTOCOLS_CHART_NAME, CHARTS_FOLDER, PROTOCOLS_CHART_TITLE, \
-    L4_PROTOCOLS_CHART_TITLE, DEST_PORTS_CHART_TITLE, DEST_PORTS_X_LABEL, DEST_PORTS_CHART_NAME, PORT_NAME, COLORS
+    L4_PROTOCOLS_CHART_TITLE, DEST_PORTS_CHART_TITLE, DEST_PORTS_X_LABEL, DEST_PORTS_CHART_NAME, PORT_NAME, COLORS, \
+    SUMMARY_CHART_X_LABEL, SUMMARY_CHART_TITLE, LABEL_TITLE_FONT_SIZE, SUMMARY_CHART_NAME
 
 
 def bytes_per_L4_protocol_chart(input_data):
@@ -115,20 +118,58 @@ def dest_ports_chart(ports):
     for key, value in ports.items():
         services.append(PORT_NAME.get(key, -1.0))
         conn.append(value)
-
     y_pos = np.arange(len(services))
     x_axis = conn
-
     ax.barh(y_pos, x_axis, align='center', color=COLORS)
     ax.set_yticks(y_pos)
     ax.set_yticklabels(services)
     ax.invert_yaxis()
     ax.set_xlabel(DEST_PORTS_X_LABEL)
     ax.set_title(DEST_PORTS_CHART_TITLE)
-
     fig.savefig(os.path.join(CHARTS_FOLDER + DEST_PORTS_CHART_NAME), bbox_inches='tight')
 
 
-
+def get_summary_chart(input_df, option='flows'):
+    """
+    This functions generates charts depends on the option attribute.
+    :param input_df: dataframe object; must contain date column
+    :param option: Possible values are:
+     - flows - default value
+     - bytes
+     - packets
+     - avg_bps
+     - avg_pps
+     - avg_bpp
+    :return: saved chart into png file
+    """
+    if isinstance(input_df, pd.DataFrame):
+        try:
+            day = input_df['date'][0]
+            day = str(day.day)+'-'+str(day.month)+'-'+str(day.year)
+            input_df.reset_index()
+            input_df = input_df.set_index(['date'])
+            input_df.sort_values('date', inplace=True, ascending=True)
+        except KeyError:
+            print('missing column date in input data frame')
+    y_axis = input_df[option].apply(lambda x: int(x))
+    fig, ax = plt.subplots()
+    print(f'index value: {input_df.index}')
+    ax.plot(input_df.index, y_axis)
+    ax.set_xlabel(SUMMARY_CHART_X_LABEL, fontsize=LABEL_TITLE_FONT_SIZE)
+    ax.set_ylabel(option, fontsize=LABEL_TITLE_FONT_SIZE)
+    if option=='avg_bps':
+        ax.set_title('average bites per seconds'+' '+SUMMARY_CHART_TITLE+day, fontsize=LABEL_TITLE_FONT_SIZE)
+    elif option=='avg_pps':
+        ax.set_title('average packets per seconds'+' '+SUMMARY_CHART_TITLE+day, fontsize=LABEL_TITLE_FONT_SIZE)
+    elif option=='avg_bpp':
+        ax.set_title('average bytes per packet'+' '+SUMMARY_CHART_TITLE+day, fontsize=LABEL_TITLE_FONT_SIZE)
+    elif not option.startswith('avg'):
+        ax.set_title('number of '+option+' '+SUMMARY_CHART_TITLE+day, fontsize=LABEL_TITLE_FONT_SIZE)
+    else:
+        ax.set_title(option + ' ' + SUMMARY_CHART_TITLE + day, fontsize=LABEL_TITLE_FONT_SIZE)
+    ax.grid(True, linestyle='-.')
+    ax.tick_params(labelcolor='black', labelsize='medium', width=3)
+    plt.xticks(rotation=90)
+    fig.savefig(os.path.join(CHARTS_FOLDER + SUMMARY_CHART_NAME+option), bbox_inches='tight', facecolor='#f2ede6', edgecolor='b')
 
 

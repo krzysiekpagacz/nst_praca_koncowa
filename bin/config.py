@@ -14,6 +14,12 @@ L4_PROTOCOLS_CHART_TITLE = 'Distribution of Bytes per Transport Layer Protocols'
 DEST_PORTS_CHART_NAME = 'ports'
 DEST_PORTS_CHART_TITLE = 'TOP 10 Services'
 DEST_PORTS_X_LABEL = 'Number of connection'
+## get_summary_chart
+SUMMARY_CHART_NAME = 'summary_'
+SUMMARY_CHART_TITLE = 'in 5 minutes time interval for the day: '
+SUMMARY_CHART_X_LABEL = 'time [hours:minutes]'
+LABEL_TITLE_FONT_SIZE = 16
+SUMMARY_OPTIONS = ['flows', 'bytes', 'packets', 'avg_bps', 'avg_pps', 'avg_bpp']
 
 # pdf_generator.py configuration
 TITLE = 'Flow Traffic Analysis'
@@ -24,8 +30,10 @@ CHAPTER_3_TITLE = 'Protocols'
 CHAPTER_3_INPUT = '../resources/text/protocols.txt'
 CHAPTER_4_TITLE = 'Services'
 CHAPTER_4_INPUT = '../resources/text/ports.txt'
+CHAPTER_5_TITLE = 'Summary of data traffic for a given day'
+CHAPTER_5_INPUT = '../resources/text/summary.txt'
 
-# well known ports (up to 49152)
+# known ports (up to 49152)
 PORT_NAME = {
 	53.0 : 'DNS',
 	443.0 : 'HTTPS',

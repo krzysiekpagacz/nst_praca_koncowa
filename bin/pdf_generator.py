@@ -2,7 +2,8 @@ import os
 
 from fpdf import FPDF
 from bin.config import TITLE, CHAPTER_1_TITLE, AUTHOR, CHAPTER_1_INPUT, CHARTS_FOLDER, PROTOCOLS_CHART_NAME, \
-    CHAPTER_3_TITLE, CHAPTER_3_INPUT, L4_PROTOCOLS_CHART_NAME, DEST_PORTS_CHART_NAME, CHAPTER_4_INPUT, CHAPTER_4_TITLE
+    CHAPTER_3_TITLE, CHAPTER_3_INPUT, L4_PROTOCOLS_CHART_NAME, DEST_PORTS_CHART_NAME, CHAPTER_4_INPUT, CHAPTER_4_TITLE, \
+    CHAPTER_5_TITLE, SUMMARY_CHART_NAME, SUMMARY_OPTIONS, CHAPTER_5_INPUT
 
 
 class PDF(FPDF):
@@ -64,7 +65,13 @@ class PDF(FPDF):
         self.image(image_name, x=x, y=y, w=w, h=h)
 
 
-def generate_pdf_file(input_files=None):
+def generate_pdf_file(input_files=None,):
+    """
+    function responsible for printing output into pdf file. There is not data manipulation here
+    :param input_files: list object needed only to display which files has been taken into consideration when preparing the report
+    Note! in summary chapter only last line from each file from a given day has been checked
+    :return: pdf file
+    """
     pdf = PDF()
     pdf.set_title(TITLE)
     pdf.set_author(AUTHOR)
@@ -72,14 +79,32 @@ def generate_pdf_file(input_files=None):
         pdf.print_chapter(1, CHAPTER_1_TITLE, CHAPTER_1_INPUT, input_files)
         pdf.print_chapter(2, CHAPTER_1_TITLE, CHAPTER_1_INPUT, input_files)
         pdf.print_chapter(3, CHAPTER_3_TITLE, CHAPTER_3_INPUT, new_page=True)
-        try:
-            pdf.print_image(os.path.join(CHARTS_FOLDER+PROTOCOLS_CHART_NAME+'.png'), y=pdf.get_y()+10, w=210-2*pdf.get_x(), new_page=False)
-            pdf.print_image(os.path.join(CHARTS_FOLDER + L4_PROTOCOLS_CHART_NAME + '.png'), x=25,y=30, w=160, h=160)
-        except RuntimeError:
-            print('check if the screen you are trying to insert is of correct type (should be png, jpg, etc.)')
+
+        pdf.print_image(os.path.join(CHARTS_FOLDER+PROTOCOLS_CHART_NAME+'.png'), y=pdf.get_y()+10, w=210-2*pdf.get_x(), new_page=False)
+        pdf.print_image(os.path.join(CHARTS_FOLDER + L4_PROTOCOLS_CHART_NAME + '.png'), x=25,y=30, w=160, h=160)
+
         pdf.print_chapter(4, CHAPTER_4_TITLE, CHAPTER_4_INPUT, new_page=True)
         pdf.print_image(os.path.join(CHARTS_FOLDER + DEST_PORTS_CHART_NAME + '.png'), y=pdf.get_y()+1,
                         w=210 - 2 * pdf.get_x(), new_page=False)
+        pdf.print_chapter(5, CHAPTER_5_TITLE, CHAPTER_5_INPUT, new_page=True)
+        pdf.print_image(os.path.join(CHARTS_FOLDER + SUMMARY_CHART_NAME+ SUMMARY_OPTIONS[0] + '.png'), y=pdf.get_y() + 1,
+                        w=210 - 2 * pdf.get_x(), new_page=False)
+        pdf.print_image(os.path.join(CHARTS_FOLDER + SUMMARY_CHART_NAME + SUMMARY_OPTIONS[1] + '.png'),
+                        y=pdf.get_y() + 1,
+                        w=210 - 2 * pdf.get_x(), new_page=True)
+        pdf.print_image(os.path.join(CHARTS_FOLDER + SUMMARY_CHART_NAME + SUMMARY_OPTIONS[2] + '.png'),
+                        y=pdf.get_y() + 10,
+                        w=210 - 2 * pdf.get_x(), new_page=True)
+        pdf.print_image(os.path.join(CHARTS_FOLDER + SUMMARY_CHART_NAME + SUMMARY_OPTIONS[3] + '.png'),
+                        y=pdf.get_y() + 10,
+                        w=210 - 2 * pdf.get_x(), new_page=True)
+        pdf.print_image(os.path.join(CHARTS_FOLDER + SUMMARY_CHART_NAME + SUMMARY_OPTIONS[4] + '.png'),
+                        y=pdf.get_y() + 10,
+                        w=210 - 2 * pdf.get_x(), new_page=True)
+        pdf.print_image(os.path.join(CHARTS_FOLDER + SUMMARY_CHART_NAME + SUMMARY_OPTIONS[5] + '.png'),
+                        y=pdf.get_y() + 10,
+                        w=210 - 2 * pdf.get_x(), new_page=True)
+
     except FileNotFoundError:
         print(f'file has not been found in a given location')
     pdf.output(TITLE + '.pdf', 'F')
