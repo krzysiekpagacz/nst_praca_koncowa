@@ -1,6 +1,6 @@
 #! /bin/bash
-RAW_DUMPS_FOLDR=netflow_raw
-CSV_DUMPS_FOLDR=netflow_csv
+RAW_DUMPS_FOLDR=../resources/netflow_raw
+CSV_DUMPS_FOLDR=../resources/netflow_csv
 FORMAT=".csv"
 
 for f in $RAW_DUMPS_FOLDR/*
