@@ -30,7 +30,7 @@ def get_data(files_count=3):
                     input_files.append(entry.name)
                     print(f'File name: {entry.name}, Rows: {df.shape[0]}')
             except FileNotFoundError:
-                print('get_Data(): check path to file or file name')
+
                 sys.exit()
     out = pd.concat(dfs, axis=0, ignore_index=True)
     # verify size!!!!!
