@@ -24,7 +24,8 @@ def bytes_per_L4_protocol_chart(input_data):
     fig, axs = plt.subplots()
     axs.bar(protocols, bytes, color=COLORS)
     axs.set_title(L4_PROTOCOLS_CHART_TITLE)
-    fig.savefig(os.path.join(CHARTS_FOLDER+L4_PROTOCOLS_CHART_NAME), bbox_inches='tight')
+    fig.savefig(os.path.join(CHARTS_FOLDER + L4_PROTOCOLS_CHART_NAME), bbox_inches='tight')
+
 
 def bar_of_pie_protocols_chart(input_data):
     protocol_ratio_others = {}
@@ -33,20 +34,20 @@ def bar_of_pie_protocols_chart(input_data):
     ratio_tcp = 0
     ratio_udp = 0
     legend_others = []
-    #sum number of bytes
+    # sum number of bytes
     for key, value in input_data.items():
         bytes_sum_total += value
         if key not in ['TCP', 'UDP']:
             bytes_sum_others += value
-    #calculate ratios
+    # calculate ratios
     for key, value in input_data.items():
         if key == 'TCP':
-            ratio_tcp = round((value/bytes_sum_others)*100, 2)
+            ratio_tcp = round((value / bytes_sum_others) * 100, 2)
         if key == 'UDP':
-            ratio_udp = round((value/bytes_sum_others) * 100, 2)
+            ratio_udp = round((value / bytes_sum_others) * 100, 2)
         if key not in ['TCP', 'UDP']:
-            protocol_ratio_others[key] = round((value/bytes_sum_others)*100, 2)
-    ratio_others = round((bytes_sum_others/bytes_sum_total)*100, 2)
+            protocol_ratio_others[key] = round((value / bytes_sum_others) * 100, 2)
+    ratio_others = round((bytes_sum_others / bytes_sum_total) * 100, 2)
     # make figure and assign axis objects
     fig = plt.figure(figsize=(9, 5))
     ax1 = fig.add_subplot(121)
@@ -68,7 +69,7 @@ def bar_of_pie_protocols_chart(input_data):
     width = .2
     print(protocol_ratio_others)
     for key, value in protocol_ratio_others.items():
-        if value>1:
+        if value > 1:
             ratios.append(value)
             legend_others.append(key)
 
@@ -107,7 +108,7 @@ def bar_of_pie_protocols_chart(input_data):
     plt.figtext(0.99, 0.01,
                 'Note! Protocols with share less than 1% among the other protocols (not TCP or UDP) have been skipped',
                 horizontalalignment='right')
-    fig.savefig(os.path.join(CHARTS_FOLDER+PROTOCOLS_CHART_NAME), bbox_inches='tight')
+    fig.savefig(os.path.join(CHARTS_FOLDER + PROTOCOLS_CHART_NAME), bbox_inches='tight')
 
 
 def dest_ports_chart(ports):
@@ -145,7 +146,7 @@ def get_summary_chart(input_df, option='flows'):
     if isinstance(input_df, pd.DataFrame):
         try:
             day = input_df['date'][0]
-            day = str(day.day)+'-'+str(day.month)+'-'+str(day.year)
+            day = str(day.day) + '-' + str(day.month) + '-' + str(day.year)
             input_df.reset_index()
             input_df = input_df.set_index(['date'])
             input_df.sort_values('date', inplace=True, ascending=True)
@@ -157,19 +158,18 @@ def get_summary_chart(input_df, option='flows'):
     ax.plot(input_df.index, y_axis)
     ax.set_xlabel(SUMMARY_CHART_X_LABEL, fontsize=LABEL_TITLE_FONT_SIZE)
     ax.set_ylabel(option, fontsize=LABEL_TITLE_FONT_SIZE)
-    if option=='avg_bps':
-        ax.set_title('average bites per seconds'+' '+SUMMARY_CHART_TITLE+day, fontsize=LABEL_TITLE_FONT_SIZE)
-    elif option=='avg_pps':
-        ax.set_title('average packets per seconds'+' '+SUMMARY_CHART_TITLE+day, fontsize=LABEL_TITLE_FONT_SIZE)
-    elif option=='avg_bpp':
-        ax.set_title('average bytes per packet'+' '+SUMMARY_CHART_TITLE+day, fontsize=LABEL_TITLE_FONT_SIZE)
+    if option == 'avg_bps':
+        ax.set_title('average bites per seconds' + ' ' + SUMMARY_CHART_TITLE + day, fontsize=LABEL_TITLE_FONT_SIZE)
+    elif option == 'avg_pps':
+        ax.set_title('average packets per seconds' + ' ' + SUMMARY_CHART_TITLE + day, fontsize=LABEL_TITLE_FONT_SIZE)
+    elif option == 'avg_bpp':
+        ax.set_title('average bytes per packet' + ' ' + SUMMARY_CHART_TITLE + day, fontsize=LABEL_TITLE_FONT_SIZE)
     elif not option.startswith('avg'):
-        ax.set_title('number of '+option+' '+SUMMARY_CHART_TITLE+day, fontsize=LABEL_TITLE_FONT_SIZE)
+        ax.set_title('number of ' + option + ' ' + SUMMARY_CHART_TITLE + day, fontsize=LABEL_TITLE_FONT_SIZE)
     else:
         ax.set_title(option + ' ' + SUMMARY_CHART_TITLE + day, fontsize=LABEL_TITLE_FONT_SIZE)
     ax.grid(True, linestyle='-.')
     ax.tick_params(labelcolor='black', labelsize='medium', width=3)
     plt.xticks(rotation=90)
-    fig.savefig(os.path.join(CHARTS_FOLDER + SUMMARY_CHART_NAME+option), bbox_inches='tight', facecolor='#f2ede6', edgecolor='b')
-
-
+    fig.savefig(os.path.join(CHARTS_FOLDER + SUMMARY_CHART_NAME + option), bbox_inches='tight', facecolor='#f2ede6',
+                edgecolor='b')

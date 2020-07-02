@@ -65,7 +65,7 @@ class PDF(FPDF):
         self.image(image_name, x=x, y=y, w=w, h=h)
 
 
-def generate_pdf_file(input_files=None,):
+def generate_pdf_file(input_files=None):
     """
     function responsible for printing output into pdf file. There is not data manipulation here
     :param input_files: list object needed only to display which files has been taken into consideration when preparing the report
@@ -87,7 +87,7 @@ def generate_pdf_file(input_files=None,):
         pdf.print_image(os.path.join(CHARTS_FOLDER + DEST_PORTS_CHART_NAME + '.png'), y=pdf.get_y()+1,
                         w=210 - 2 * pdf.get_x(), new_page=False)
         pdf.print_chapter(5, CHAPTER_5_TITLE, CHAPTER_5_INPUT, new_page=True)
-        pdf.print_image(os.path.join(CHARTS_FOLDER + SUMMARY_CHART_NAME+ SUMMARY_OPTIONS[0] + '.png'), y=pdf.get_y() + 1,
+        pdf.print_image(os.path.join(CHARTS_FOLDER + SUMMARY_CHART_NAME + SUMMARY_OPTIONS[0] + '.png'), y=pdf.get_y() + 1,
                         w=210 - 2 * pdf.get_x(), new_page=False)
         pdf.print_image(os.path.join(CHARTS_FOLDER + SUMMARY_CHART_NAME + SUMMARY_OPTIONS[1] + '.png'),
                         y=pdf.get_y() + 1,

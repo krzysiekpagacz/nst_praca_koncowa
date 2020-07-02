@@ -6,7 +6,6 @@ from bs4 import BeautifulSoup
 MAIN_URL = 'http://pbz.kt.agh.edu.pl/~matiolanski/netflow/'
 THIS_DIRECTORY = os.path.dirname(__file__)
 
-
 def get_folders_with_netflows():
 	response = requests.get(MAIN_URL)
 	soup = BeautifulSoup(response.text, 'html.parser')
@@ -39,7 +38,7 @@ def main():
 			file_name = str(file_url).split('/')[-1]
 			print('current FILE is {}'.format(file_name))
 			file_response = requests.get(file_url)
-			open(os.path.join(THIS_DIRECTORY, '../netflow/'+file_name), 'wb').write(file_response.content)
+			open(os.path.join(THIS_DIRECTORY, '../resources/netflow_raw/'+file_name), 'wb').write(file_response.content)
 	print('DONE. Downloaded files: {}'.format(file_counter))
 
 
