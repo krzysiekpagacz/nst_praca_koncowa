@@ -1,8 +1,18 @@
 # core.py configuration
 INPUT_FILES = 'netflow_csv'
+OUT_COLUMNS = ['date'
+	, 'file_name'
+    , 'flows'
+    , 'bytes'
+    , 'packets'
+    , 'avg_bps'
+    , 'avg_pps'
+    , 'avg_bpp'
+               ]
 
 # charts.py configuration
-COLORS = ['#1531d1', '#fa1616', '#03fcbe', '#f6fa16', '#b515d1', '#4a7531', '#d8c3db', '#d1158c', '#15d183', '#87857b','#ab1d53']
+COLORS = ['#1531d1', '#fa1616', '#03fcbe', '#f6fa16', '#b515d1', '#4a7531', '#d8c3db', '#d1158c', '#15d183', '#87857b',
+          '#ab1d53']
 CHARTS_FOLDER = '../resources/charts/'
 ## bar_of_pie_protocols_chart
 PROTOCOLS_CHART_NAME = 'protocols'
@@ -35,14 +45,14 @@ CHAPTER_5_INPUT = '../resources/text/summary.txt'
 
 # known ports (up to 49152)
 PORT_NAME = {
-	53.0 : 'DNS',
-	443.0 : 'HTTPS',
-	80.0: 'HTTP',
-	6881.0: 'Bit Torrent',
-	445.0: 'SMB File Sharing',
-	123.0: 'NTP',
-	3478.0: 'STUN/TURN',  # a protocol for NAT Traversal
-	23.0: 'Telnet',
-	5222.0: 'XMPP',
-	5938.0: 'Team Viewer'
+    53.0: 'DNS',
+    443.0: 'HTTPS',
+    80.0: 'HTTP',
+    6881.0: 'Bit Torrent',
+    445.0: 'SMB File Sharing',
+    123.0: 'NTP',
+    3478.0: 'STUN/TURN',  # a protocol for NAT Traversal
+    23.0: 'Telnet',
+    5222.0: 'XMPP',
+    5938.0: 'Team Viewer'
 }
