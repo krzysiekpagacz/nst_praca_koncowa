@@ -9,6 +9,7 @@ OUT_COLUMNS = ['date'
     , 'avg_pps'
     , 'avg_bpp'
                ]
+NUMBER_OF_PORTS = 8
 
 # charts.py configuration
 COLORS = ['#1531d1', '#fa1616', '#03fcbe', '#f6fa16', '#b515d1', '#4a7531', '#d8c3db', '#d1158c', '#15d183', '#87857b',
@@ -22,11 +23,11 @@ L4_PROTOCOLS_CHART_NAME = 'transport_protocols'
 L4_PROTOCOLS_CHART_TITLE = 'Distribution of Bytes per Transport Layer Protocols'
 ## dest_ports_chart
 DEST_PORTS_CHART_NAME = 'ports'
-DEST_PORTS_CHART_TITLE = 'TOP 10 Services'
-DEST_PORTS_X_LABEL = 'Number of connection'
+DEST_PORTS_CHART_TITLE = 'TOP '+str(NUMBER_OF_PORTS)+' Services'
+DEST_PORTS_X_LABEL = 'Number of connections'
 ## get_summary_chart
 SUMMARY_CHART_NAME = 'summary_'
-SUMMARY_CHART_TITLE = 'in 5 minutes time interval for the day: '
+SUMMARY_CHART_TITLE = 'in 5 minutes time interval'
 SUMMARY_CHART_X_LABEL = 'time [hours:minutes]'
 LABEL_TITLE_FONT_SIZE = 16
 SUMMARY_OPTIONS = ['flows', 'bytes', 'packets', 'avg_bps', 'avg_pps', 'avg_bpp']
@@ -36,6 +37,8 @@ TITLE = 'Flow Traffic Analysis'
 AUTHOR = 'Krzysztof Pagacz'
 CHAPTER_1_TITLE = 'Introduction'
 CHAPTER_1_INPUT = '../resources/text/chapter_1.txt'
+CHAPTER_2_TITLE = 'Script architecture'
+CHAPTER_2_INPUT = '../resources/text/chapter_2.txt'
 CHAPTER_3_TITLE = 'Protocols'
 CHAPTER_3_INPUT = '../resources/text/protocols.txt'
 CHAPTER_4_TITLE = 'Services'
@@ -54,5 +57,8 @@ PORT_NAME = {
     3478.0: 'STUN/TURN',  # a protocol for NAT Traversal
     23.0: 'Telnet',
     5222.0: 'XMPP',
-    5938.0: 'Team Viewer'
+    5938.0: 'Team Viewer',
+    993.0: 'IMAP',
+    22.0: 'SSH',
+    6667.0: 'IRC'
 }

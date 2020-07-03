@@ -1,3 +1,5 @@
+from builtins import int
+
 import matplotlib.pyplot as plt
 import numpy as np
 import os
@@ -11,16 +13,14 @@ from bin.config import PROTOCOLS_CHART_NAME, L4_PROTOCOLS_CHART_NAME, CHARTS_FOL
     SUMMARY_CHART_X_LABEL, SUMMARY_CHART_TITLE, LABEL_TITLE_FONT_SIZE, SUMMARY_CHART_NAME
 
 
-def bytes_per_L4_protocol_chart(input_data):
-    print(f'input data type is: {type(input_data)}')
-    try:
-        protocols = input_data['pr'].to_numpy()
-    except KeyError:
-        print('missing column pr')
-    try:
-        bytes = input_data['ibyt'].to_numpy()
-    except KeyError:
-        print('missing column ibyt')
+def bytes_per_L4_protocol_chart(data):
+    print(f'input data type is: {type(data)}')
+    data = data.iloc[:, 9:11]
+    protocols = []
+    bytes = []
+    for key, value in data.items():
+        protocols.append(key)
+        bytes.append(data.iloc[0][key])
     fig, axs = plt.subplots()
     axs.bar(protocols, bytes, color=COLORS)
     axs.set_title(L4_PROTOCOLS_CHART_TITLE)
@@ -28,6 +28,8 @@ def bytes_per_L4_protocol_chart(input_data):
 
 
 def bar_of_pie_protocols_chart(input_data):
+    # print(type(input_data))
+    # print(input_data)
     protocol_ratio_others = {}
     bytes_sum_total = 0
     bytes_sum_others = 0
@@ -35,10 +37,25 @@ def bar_of_pie_protocols_chart(input_data):
     ratio_udp = 0
     legend_others = []
     # sum number of bytes
-    for key, value in input_data.items():
-        bytes_sum_total += value
+    # bytes_sum_total = input_data.sum()
+    # # print(bytes_sum_total)
+    # bytes_sum_others = input_data.iloc[:, 0:9].sum()
+    # bytes_sum_others = bytes_sum_others.sum()
+
+    for key, value in input_data.iteritems():
+        # print(key)
+        # print(value)
+        bytes_sum_total = input_data.iloc[0][key]
         if key not in ['TCP', 'UDP']:
-            bytes_sum_others += value
+            bytes_sum_others = input_data.iloc[0][key]
+
+    print(bytes_sum_total)
+    print(bytes_sum_others)
+    # for key, value in input_data.items():
+    #     bytes_sum_total += value
+    #     if key not in ['TCP', 'UDP']:
+    #         bytes_sum_others += value
+    #     print(bytes_sum_others)
     # calculate ratios
     for key, value in input_data.items():
         if key == 'TCP':
@@ -118,7 +135,7 @@ def dest_ports_chart(ports):
     conn = []
     for key, value in ports.items():
         services.append(PORT_NAME.get(key, -1.0))
-        conn.append(value)
+        conn.append(ports.iloc[0][key])
     y_pos = np.arange(len(services))
     x_axis = conn
     ax.barh(y_pos, x_axis, align='center', color=COLORS)
@@ -130,10 +147,10 @@ def dest_ports_chart(ports):
     fig.savefig(os.path.join(CHARTS_FOLDER + DEST_PORTS_CHART_NAME), bbox_inches='tight')
 
 
-def get_summary_chart(input_df, option='flows'):
+def get_summary_chart(data, option='flows'):
     """
     This functions generates charts depends on the option attribute.
-    :param input_df: dataframe object; must contain date column
+    :param data: dataframe object; must contain date column
     :param option: Possible values are:
      - flows - default value
      - bytes
@@ -143,19 +160,19 @@ def get_summary_chart(input_df, option='flows'):
      - avg_bpp
     :return: saved chart into png file
     """
-    if isinstance(input_df, pd.DataFrame):
+    if isinstance(data, pd.DataFrame):
         try:
-            day = input_df['date'][0]
+            day = data['date'][0]
             day = str(day.day) + '-' + str(day.month) + '-' + str(day.year)
-            input_df.reset_index()
-            input_df = input_df.set_index(['date'])
-            input_df.sort_values('date', inplace=True, ascending=True)
+            data.reset_index()
+            data = data.set_index(['date'])
+            data.sort_values('date', inplace=True, ascending=True)
         except KeyError:
             print('missing column date in input data frame')
-    y_axis = input_df[option].apply(lambda x: int(x))
+    y_axis = data[option].apply(lambda x: int(x))
     fig, ax = plt.subplots()
-    print(f'index value: {input_df.index}')
-    ax.plot(input_df.index, y_axis)
+    print(f'index value: {data.index}')
+    ax.plot(data.index, y_axis)
     ax.set_xlabel(SUMMARY_CHART_X_LABEL, fontsize=LABEL_TITLE_FONT_SIZE)
     ax.set_ylabel(option, fontsize=LABEL_TITLE_FONT_SIZE)
     if option == 'avg_bps':
@@ -168,6 +185,43 @@ def get_summary_chart(input_df, option='flows'):
         ax.set_title('number of ' + option + ' ' + SUMMARY_CHART_TITLE + day, fontsize=LABEL_TITLE_FONT_SIZE)
     else:
         ax.set_title(option + ' ' + SUMMARY_CHART_TITLE + day, fontsize=LABEL_TITLE_FONT_SIZE)
+    ax.grid(True, linestyle='-.')
+    ax.tick_params(labelcolor='black', labelsize='medium', width=3)
+    plt.xticks(rotation=90)
+    fig.savefig(os.path.join(CHARTS_FOLDER + SUMMARY_CHART_NAME + option), bbox_inches='tight', facecolor='#f2ede6',
+                edgecolor='b')
+
+
+def get_summary_chart2(data, option='flows'):
+    print(data.columns.values)
+    fig, ax = plt.subplots()
+    y_axis = data.index
+    if option == 'flows':
+        data = data['ts'].apply(lambda x: int(x))
+        ax.plot(y_axis, data)
+        ax.set_title('flows' + ' ' + SUMMARY_CHART_TITLE, fontsize=LABEL_TITLE_FONT_SIZE)
+    elif option == 'bytes':
+        data = data['te'].apply(lambda x: int(x))
+        ax.plot(y_axis, data)
+        ax.set_title('bytes' + ' ' + SUMMARY_CHART_TITLE, fontsize=LABEL_TITLE_FONT_SIZE)
+    elif option == 'packets':
+        data = data['td'].apply(lambda x: int(x))
+        ax.plot(y_axis, data)
+        ax.set_title('packets' + ' ' + SUMMARY_CHART_TITLE, fontsize=LABEL_TITLE_FONT_SIZE)
+    elif option == 'avg_bps':
+        data = data['sa'].apply(lambda x: int(x))
+        ax.plot(y_axis, data)
+        ax.set_title('average bites per seconds' + ' ' + SUMMARY_CHART_TITLE , fontsize=LABEL_TITLE_FONT_SIZE)
+    elif option == 'avg_pps':
+        data = data['da'].apply(lambda x: int(x))
+        ax.plot(y_axis, data)
+        ax.set_title('average packets per seconds' + ' ' + SUMMARY_CHART_TITLE , fontsize=LABEL_TITLE_FONT_SIZE)
+    elif option == 'avg_bpp':
+        data = data['sp'].apply(lambda x: int(x))
+        ax.plot(y_axis, data)
+        ax.set_title('average bytes per packet' + ' ' + SUMMARY_CHART_TITLE , fontsize=LABEL_TITLE_FONT_SIZE)
+    ax.set_xlabel(SUMMARY_CHART_X_LABEL, fontsize=LABEL_TITLE_FONT_SIZE)
+    ax.set_ylabel(option, fontsize=LABEL_TITLE_FONT_SIZE)
     ax.grid(True, linestyle='-.')
     ax.tick_params(labelcolor='black', labelsize='medium', width=3)
     plt.xticks(rotation=90)
