@@ -1,7 +1,7 @@
 # core.py configuration
-INPUT_FILES = 'netflow_csv_all'
+INPUT_FILES = 'netflow_csv'
 
-NUMBER_OF_PORTS = 8
+NUMBER_OF_PORTS = 10
 
 # charts.py configuration
 COLORS = ['#1531d1', '#fa1616', '#03fcbe', '#f6fa16', '#b515d1', '#4a7531', '#d8c3db', '#d1158c', '#15d183', '#87857b',
@@ -52,6 +52,8 @@ PORT_NAME = {
     993.0: 'IMAP',
     22.0: 'SSH',
     6667.0: 'IRC',
+    137: 'NetBios',
+    161: 'SNMP',
     27000.0: 'Online Games',
     27001.0: 'Online Games',
     27002.0: 'Online Games',

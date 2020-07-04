@@ -38,9 +38,10 @@ def get_data(files_count=3):
                     protocols = protocols_df.to_dict('index')
                     # Prepare input for ports reports - ephemeral ports excluded, connection with td=0 excluded
                     df = df[~df.dp.isin(['0', '21548'])]
-                    df = df.loc[df.dp < 49152]
                     df = df[~df.td.isin(['0.000'])]
-                    ports_df = df.groupby(['dp'], as_index=False)['sa'].count().sort_values(by='sa', ascending=False)[:NUMBER_OF_PORTS]
+                    df = df.loc[df.dp < 49152.0]
+                    ports_df = df.groupby(['dp'], as_index=False)['sa'].count().sort_values(by='sa', ascending=False)
+                    ports_df = ports_df.iloc[0:NUMBER_OF_PORTS]
                     ports_df.set_index('dp', inplace=True)
                     ports_df = ports_df.to_dict('index')
                     raw_data[date] = [file_name, dict_summary, protocols, ports_df]
@@ -55,6 +56,11 @@ def get_destination_ports_df(data):
     for k, v in data.items():
         df = pd.DataFrame.from_dict(v[3])
         ports_df = pd.concat([ports_df, df]).groupby(level=0).sum()
+    ports_df = ports_df.T
+    ports_df.sort_values(by='sa', inplace=True, ascending=False)
+    print(ports_df)
+    ports_df = ports_df.iloc[0:NUMBER_OF_PORTS]
+    ports_df = ports_df.T
     return ports_df
 
 
@@ -63,7 +69,6 @@ def get_bytes_per_protocols_df(data):
     for k, v in data.items():
         df = pd.DataFrame.from_dict(v[2])
         bpp_df = pd.concat([bpp_df, df]).groupby(level=0).sum()
-    print(bpp_df)
     return bpp_df
 
 
@@ -86,7 +91,7 @@ def get_input_file_names(data):
 
 
 if __name__ == '__main__':
-    input_data = get_data(files_count=2)
+    input_data = get_data(files_count=288)
     destination_ports_chart(get_destination_ports_df(input_data))
     protocols = get_bytes_per_protocols_df(input_data)
     # bar_of_pie_protocols_chart(protocols)

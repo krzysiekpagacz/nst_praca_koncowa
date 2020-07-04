@@ -22,27 +22,39 @@ def bytes_per_L4_protocol_chart(data):
     fig.savefig(os.path.join(CHARTS_FOLDER + L4_PROTOCOLS_CHART_NAME), bbox_inches='tight')
 
 
-def bar_of_pie_protocols_chart(input_data):
-    # print(type(input_data))
-    # print(input_data)
+def bar_of_pie_protocols_chart(data):
+    data_total = data
+    print(data_total)
+    data_others = data.drop(data.columns[['TCP', 'UDP']], axis=1)
+    print(data_others)
     protocol_ratio_others = {}
     bytes_sum_total = 0
     bytes_sum_others = 0
     ratio_tcp = 0
     ratio_udp = 0
     legend_others = []
+
+    data['bytes_sum_total'] = data.sum(axis=1)
+    print(data['bytes_sum_total'])
+    col_list = list(data)
+    col_list.remove('TCP')
+    col_list.remove('UDP')
+    col_list.remove('bytes_sum_total')
+    print(col_list)
+    data['bytes_sum_others'] = data.sum(axis=1)
+    print(data['bytes_sum_others'])
     # sum number of bytes
     # bytes_sum_total = input_data.sum()
     # # print(bytes_sum_total)
     # bytes_sum_others = input_data.iloc[:, 0:9].sum()
     # bytes_sum_others = bytes_sum_others.sum()
 
-    for key, value in input_data.iteritems():
-        # print(key)
-        # print(value)
-        bytes_sum_total = input_data.iloc[0][key]
-        if key not in ['TCP', 'UDP']:
-            bytes_sum_others = input_data.iloc[0][key]
+    # for key, value in input_data.iteritems():
+    #     if key=='TCP':
+    #         print(value)
+        # bytes_sum_total = input_data.iloc[0][key]
+        # if key not in ['TCP', 'UDP']:
+        #     bytes_sum_others = input_data.iloc[0][key]
 
     print(bytes_sum_total)
     print(bytes_sum_others)
@@ -52,7 +64,7 @@ def bar_of_pie_protocols_chart(input_data):
     #         bytes_sum_others += value
     #     print(bytes_sum_others)
     # calculate ratios
-    for key, value in input_data.items():
+    for key, value in data.items():
         if key == 'TCP':
             ratio_tcp = round((value / bytes_sum_others) * 100, 2)
         if key == 'UDP':
@@ -129,8 +141,8 @@ def destination_ports_chart(ports):
     services = []
     conn = []
     for key, value in ports.items():
-        # services.append(PORT_NAME.get(key, -1.0))
-        services.append(key)
+        services.append(PORT_NAME.get(key, 'Unassigned'))
+        # services.append(key)
         conn.append(ports.iloc[0][key])
     y_pos = np.arange(len(services))
     x_axis = conn
