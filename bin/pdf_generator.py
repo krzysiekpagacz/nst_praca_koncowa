@@ -77,7 +77,7 @@ def generate_pdf_file(input_files=None):
     pdf.set_author(AUTHOR)
     try:
         pdf.print_chapter(1, CHAPTER_1_TITLE, CHAPTER_1_INPUT, input_files)
-        pdf.print_chapter(2, CHAPTER_2_TITLE, CHAPTER_2_INPUT, input_files)
+        pdf.print_chapter(2, CHAPTER_2_TITLE, CHAPTER_2_INPUT)
         pdf.print_chapter(3, CHAPTER_3_TITLE, CHAPTER_3_INPUT, new_page=True)
 
         # pdf.print_image(os.path.join(CHARTS_FOLDER+PROTOCOLS_CHART_NAME+'.png'), y=pdf.get_y()+10, w=210-2*pdf.get_x(), new_page=False)

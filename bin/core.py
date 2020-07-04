@@ -1,13 +1,10 @@
-from datetime import datetime
-
 import pandas as pd
 import os
 import sys
 from datetime import datetime as dt
-
-from bin.config import INPUT_FILES, OUT_COLUMNS, PORT_NAME, SUMMARY_OPTIONS, NUMBER_OF_PORTS
+from bin.config import INPUT_FILES, PORT_NAME, SUMMARY_OPTIONS, NUMBER_OF_PORTS
 from bin.pdf_generator import generate_pdf_file
-from bin.charts import bar_of_pie_protocols_chart, dest_ports_chart, get_summary_chart, get_summary_chart2
+from bin.charts import bar_of_pie_protocols_chart, destination_ports_chart, get_summary_chart
 from bin.charts import bytes_per_L4_protocol_chart
 
 folder_with_csv_files = '../resources/' + INPUT_FILES
@@ -53,11 +50,10 @@ def get_data(files_count=3):
     return raw_data
 
 
-def get_dest_ports_df(data):
+def get_destination_ports_df(data):
     ports_df = pd.DataFrame()
     for k, v in data.items():
-        ports = v[3]
-        df = pd.DataFrame.from_dict(ports)
+        df = pd.DataFrame.from_dict(v[3])
         ports_df = pd.concat([ports_df, df]).groupby(level=0).sum()
     return ports_df
 
@@ -65,8 +61,7 @@ def get_dest_ports_df(data):
 def get_bytes_per_protocols_df(data):
     bpp_df = pd.DataFrame()
     for k, v in data.items():
-        protocols = v[2]
-        df = pd.DataFrame.from_dict(protocols)
+        df = pd.DataFrame.from_dict(v[2])
         bpp_df = pd.concat([bpp_df, df]).groupby(level=0).sum()
     print(bpp_df)
     return bpp_df
@@ -76,30 +71,28 @@ def get_summary_df(data):
     summary_df = pd.DataFrame()
     for k, v in data.items():
         time = dt.strptime(k, '%Y%m%d%H%M')
-        summary_dict = v[1]
-        df = pd.DataFrame(summary_dict, index=[time])
+        df = pd.DataFrame(v[1], index=[time])
         summary_df = pd.concat([summary_df, df])
     summary_df = summary_df.sort_index()
-    print(summary_df)
     return summary_df
 
 
 def get_input_file_names(data):
-    files = []
+    input_files = []
     for k, v in data.items():
-        files.append(v[0])
-    files = sorted(files)
-    print(files)
+        input_files.append(v[0])
+    input_files = sorted(input_files)
+    return input_files
 
 
 if __name__ == '__main__':
-    input_data = get_data(files_count=4)
-    dest_ports_chart(get_dest_ports_df(input_data))
+    input_data = get_data(files_count=2)
+    destination_ports_chart(get_destination_ports_df(input_data))
     protocols = get_bytes_per_protocols_df(input_data)
     # bar_of_pie_protocols_chart(protocols)
     bytes_per_L4_protocol_chart(protocols)
     for summary in SUMMARY_OPTIONS:
-        get_summary_chart2(get_summary_df(input_data), option=summary)
+        get_summary_chart(get_summary_df(input_data), option=summary)
     files = get_input_file_names(input_data)
     generate_pdf_file(files)
 
