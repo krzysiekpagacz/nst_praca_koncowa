@@ -4,7 +4,7 @@ import sys
 from datetime import datetime as dt
 from bin.config import INPUT_FILES, PORT_NAME, SUMMARY_OPTIONS, NUMBER_OF_PORTS
 from bin.pdf_generator import generate_pdf_file
-from bin.charts import bar_of_pie_protocols_chart, destination_ports_chart, get_summary_chart
+from bin.charts import destination_ports_chart, get_summary_chart
 from bin.charts import bytes_per_L4_protocol_chart
 
 folder_with_csv_files = '../resources/' + INPUT_FILES
@@ -58,7 +58,6 @@ def get_destination_ports_df(data):
         ports_df = pd.concat([ports_df, df]).groupby(level=0).sum()
     ports_df = ports_df.T
     ports_df.sort_values(by='sa', inplace=True, ascending=False)
-    print(ports_df)
     ports_df = ports_df.iloc[0:NUMBER_OF_PORTS]
     ports_df = ports_df.T
     return ports_df
@@ -91,10 +90,9 @@ def get_input_file_names(data):
 
 
 if __name__ == '__main__':
-    input_data = get_data(files_count=288)
+    input_data = get_data(files_count=25)
     destination_ports_chart(get_destination_ports_df(input_data))
     protocols = get_bytes_per_protocols_df(input_data)
-    # bar_of_pie_protocols_chart(protocols)
     bytes_per_L4_protocol_chart(protocols)
     for summary in SUMMARY_OPTIONS:
         get_summary_chart(get_summary_df(input_data), option=summary)
