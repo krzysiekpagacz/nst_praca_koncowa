@@ -1,0 +1,1 @@
+In this chapter detailed architecture of python script has been described.

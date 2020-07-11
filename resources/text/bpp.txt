@@ -1,0 +1,1 @@
+The chart below presents average number of bytes per packets in time. It is different then previously described charts, as between 6 a.m. and 12 a.m. grows, at 12 a.m. we can observe point of inflection after that average value of bytes per packets drops.

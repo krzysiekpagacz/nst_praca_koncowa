@@ -1,0 +1,1 @@
+uses data provided by get_bytes_per_protocols_df(data) from core.py module and creates bar chart, which shows bytes distribution between TCP and UDP protocols

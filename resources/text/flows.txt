@@ -1,0 +1,3 @@
+The most universal definition of traffic flow in packet network is a sequence of packets which share a common property. In this work flow is defined as a unidirectional sequence of packets that share the same five-tuple: IP source address,  IP  destination  address,  source  port,  destination port, and transport layer protocol type. [7]
+
+In the below presented chart we can see the relation between time and number of flows. Starting from midnight 08-06-2015 the amount of flows descreasing untill 6 a.m. after that we can observe constant growth and the pick is located somewhere about 1 p.m. By the midnight at the next day (09-06-2015) the amount of flows drops 40% compares to the highest amount at 1 p.m.

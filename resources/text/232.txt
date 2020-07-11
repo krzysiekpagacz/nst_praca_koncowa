@@ -1,0 +1,1 @@
+uses data provided by get_destination_ports_df(data) from core.py module and creates a chart, which shows the relation between number of connections and destination port number.

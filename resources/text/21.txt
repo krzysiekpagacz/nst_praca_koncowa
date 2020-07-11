@@ -1,0 +1,2 @@
+Network logs have been downloaded by the module: logs_collector.py. It saves log files into the folder ./resources/netflow_raw.
+In the second step the log files have been converted into CSV files by means of shell script: to_csv.sh. This script makes a CSV file from every single binary file located in directory: ./resources/netflow_raw. The output in CSV format have been stored in ./resources/netflow_csv and used for further processing as described below.

@@ -1,0 +1,11 @@
+function, which runs other functions from core.py module and other imported functions from other modules.
+
+if __name__ == '__main__':
+    input_data = get_data(files_count=288)
+    destination_ports_chart(get_destination_ports_df(input_data))
+    protocols = get_bytes_per_protocols_df(input_data)
+    bytes_per_L4_protocol_chart(protocols)
+    for summary in SUMMARY_OPTIONS:
+        get_summary_chart(get_summary_df(input_data), option=summary)
+    files = get_input_file_names(input_data)
+    generate_pdf_file(files)

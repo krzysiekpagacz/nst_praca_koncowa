@@ -1,0 +1,1 @@
+this function creates an object of PDF class. By means of this object the PDF file is being created in this function. Parameter input_files is needed only to display which files have been considered in this report.

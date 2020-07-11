@@ -1,0 +1,21 @@
+looks up the data in the directory specified by the variable: folder_with_csv_files (the directory where CSV files have been stored) opens each file and converts the data into pandas dataframe type. After that those data are being manipulated, so that the needed input is obtained. 
+Attribute files_count, which is set by default to 3 indicates how many files from folder ./resources/netflow_csv should be taken into consideration. It is particulary useful during testing phase, where one would not like to wait until the whole scope of files in the directory have been processed.
+The output of this method is a dictionary object in the form of:
+ 	raw_data[date] = [file_name, dict_summary, protocols, ports_df]
+ 	where:
+ 	date - key of the dictionary
+ 	file_name - name of the CSV file (data source)to
+ 	dict_summary - each of CSV file has got a summary raw at the bottom, with the following information:
+	     - flows	
+	     - bytes	
+	     - packets	
+	     - avg_bps - average bytes per seconds
+	     - avg_pps - average packets per seconds
+	     - avg_bpp - average bytes per packets
+ 	protocols - dataframe object, which contains the relation of a protocol and corresponding number of input bytes
+ 	ports_df - dataframe object, which contains information about destination port and the number of connections to each of this port. Please note that some ports have been skipped: 0, 21548 and ports > 49152. The connections with duration time equal to 0 have been also omitted.
+ 	Example of the output:
+ 	 '201506080120': ['nfcapd.201506080120.csv', 
+{'ts': '625029', 'te': '49853438740', 'td': '56879420', 'sa': '92856', 'da': '13', 'sp': '876'}, 
+{'ESP': {'ibyt': 5061114.0}, 'GRE': {'ibyt': 11557475.0}, 'ICMP': {'ibyt': 21667274.0}, 'ICMP6': {'ibyt': 853767.0}, 'IGMP': {'ibyt': 52272.0}, 'IPIP': {'ibyt': 1979963.0}, 'IPv6': {'ibyt': 107684.0}, 'OSPF': {'ibyt': 155468.0}, 'PIM': {'ibyt': 1180.0}, 'TCP': {'ibyt': 43637160330.0}, 'UDP': {'ibyt': 6174842213.0}},
+{53.0: {'sa': 78651}, 443.0: {'sa': 58524}, 80.0: {'sa': 54954}, 6881.0: {'sa': 31196}, 445.0: {'sa': 20380}, 5060.0: {'sa': 13145}, 23.0: {'sa': 5358}}]

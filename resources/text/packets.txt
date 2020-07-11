@@ -1,0 +1,2 @@
+Packet is a collection of data that can be used by computers which need to communicate with each other, usually as part of a network. [8]
+Each packet includes a source and destination as well as the content (or data) being transferred. The structure of the packet depends on the protocol used to transfer it.

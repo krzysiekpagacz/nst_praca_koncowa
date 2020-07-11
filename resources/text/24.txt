@@ -1,0 +1,1 @@
+This module generates an output in the form of PDF file. It contains class PDF, which inherites from FDPF module. PDF class sets some basic parameters of the file, like: header, footer, chapter title, chapter body. It has also functions print_chapter() and print_image(), which adds a text and an image (e.g. chart) respectively.

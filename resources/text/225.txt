@@ -1,0 +1,2 @@
+takes dictionary returned by get_data function and returns list of file names, which have been taken into consideration by the script, sorted by the name ascending, example (for 2 files):
+['nfcapd.201506080025.csv', 'nfcapd.201506080120.csv']

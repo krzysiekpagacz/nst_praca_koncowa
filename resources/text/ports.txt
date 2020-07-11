@@ -1,0 +1,7 @@
+Each application is identified by the unique number assigned - Port. It is used by protocols of transport layer to identify the proper application, to which data has to be sent. IANA (ang. Internet Assigned Numbers Authority) has divided ports into the following groups:
+- Well Known Ports range (0-1023)
+- Registered Ports range (1024-49151) - can be used as service identifiers upon successful registration through IANA
+- Dynamic Ports range (49152-65535) - as it is dynamically assigned it cannot be used as service identifier [5]
+
+Known that port number up to 49151 can be used to identify the service it was decided to find top 10 used services in the analysed period of time.
+In the chart below we can see that HTTP and HTTPS (services used by internet browsers) are the most commonly used.  As those logs have been collected on the university campus it was also  not surprise that file transfer services are on the top (SMB, torrent).

@@ -1,0 +1,8 @@
+[1] http://nfdump.sourceforge.net/
+[2] Cisco Networking Academy, 7.1.1.1 Role of the Transport Layer
+[3] https://en.wikipedia.org/wiki/Transport_layer
+[4] https://www.privateinternetaccess.com/blog/tcp-vs-udp-understanding-the-difference/
+[5] IANA Allocation Guidelines for TCP and UDP Port Numbers, February 18, 2008
+[6] DongJin Lee, Brian E. Carpenter, Nevil Brownlee, "Observations of UDP to TCP Ratio and PortNumbers"
+[7] Piotr Jurkiewicz, Grzegorz Rzym, Piotr Borylo, "Flow length and size distributions in campus Internet traffic"
+[8] https://simple.wikipedia.org/wiki/Packet_(computing)

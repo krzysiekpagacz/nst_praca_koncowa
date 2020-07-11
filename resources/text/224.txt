@@ -1,0 +1,4 @@
+takes dictionary returned by get_data function and returns pandas dataframe with last raw from each CSV file, thus with the following information for the 5 minutes time interval: flows, bytes, packets, average bytes per seconds, average packets per seconds, average bytes per packets. Index of this dataframe is datetime object in format: %Y%m%d%H%M, example (for 2 files):
+                         			ts           te        td      sa  da   sp
+2015-06-08 00:25:00  798345  59915617091  70472445  111585  16  850
+2015-06-08 01:20:00  625029  49853438740  56879420   92856  13  876

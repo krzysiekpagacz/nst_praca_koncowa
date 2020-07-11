@@ -1,0 +1,1 @@
+Some configuration variables have been extracted from other chapters and gather in config.py module, like for example: charts' names, mapping of port names and numbers etc.

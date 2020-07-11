@@ -1,0 +1,3 @@
+Byte is a unit of digital information that consists of eight bits. A single byte can be used to represent 256 different values.
+
+Similary to the chart presented for flows we can observe the same shape for the chart ilustrated number of bytes per time relation. However here we can notice 4 picks between 12:00 and 18:00. The first one occured somwhere around 1 p.m., the second around 3 p.m. and the last 2 picks can be observe shrtly before 6 p.m. On the chart presented number of flows in time those picks were not so clearly presented. I suspect that this is because of the granularity of the data. Amount of bytes is by 5 orders of magnitude more than the number of flows for the same time (bytes - 10^11, whereas flows are 10^6).

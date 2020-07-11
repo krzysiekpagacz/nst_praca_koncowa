@@ -1,0 +1,7 @@
+In this work a data collected from university campus network from day 08-06-2015 (Monday) have been analyzed.
+The goal of this analysis is to present some trends in network traffic, however based on the data from only one day those trends will be obviously limited and the analysis is not that accurate as it might be when more data is analysed. Nevertheless, due to performance limitations I have decided to focus on only one particular day.
+
+The analysis has been done via python script, which code can be found under the following link: https://github.com/krzysiekpagacz/nst_praca_koncowa/tree/2.0
+It was assumed that this script takes input data, do the analysis and prepare the report in form of PDF file.
+
+Raw data have been gathered by nfdump tool and uploaded into internet in the binary form. nfdump reads the netflow data from one or many files stored by nfcapd (netflow collector daemon). nfdump displays netflow data and/or creates top N statistics of flows, bytes, packets. nfdump has a powerful and flexible flow aggregation including bi-directional flows. The output format is user selectable and also includes a simple csv format for post processing.[1]

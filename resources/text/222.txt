@@ -1,0 +1,3 @@
+takes dictionary returned by get_data function and returns pandas dataframe with port number and number of source addresses. The number of different ports is limited to some values represented by NUMBER_OF_PORTS. In this work NUMBER_OF_PORTS has been set to 10, so only top 10 ports, ordered by the number of the connection have been returned, example (for 2 files):
+    80.0    443.0   445.0   53.0    ...  993.0   22.0    6667.0  5938.0
+sa   75430   60667   35105   33120  ...    1774    1637    1463    1290

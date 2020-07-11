@@ -1,0 +1,3 @@
+takes dictionary returned by get_data function and returns 1-raw pandas dataframe with protocol names and summary number of inputted bytes, example (for 2 files):
+            ESP         GRE        ICMP  ...     PIM           TCP           UDP
+ibyt  9862084.0  22151985.0  58651084.0  ...  2360.0  9.507028e+10  1.460152e+10

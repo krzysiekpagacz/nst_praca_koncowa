@@ -1,0 +1,9 @@
+Flow
+the most universal definition of traffic flow in packet network is a sequence of packets which share a common property. In this work flow is defined as a unidirectional sequence of packets that share the same five-tuple: IP source address,  IP  destination  address,  source  port,  destination port, and transport layer protocol type. [7]
+
+Packet
+collection of data that can be used by computers which need to communicate with each other, usually as part of a network. [8]
+Each packet includes a source and destination as well as the content (or data) being transferred. The structure of the packet depends on the protocol used to transfer it.
+
+Byte
+is a unit of digital information that most commonly consists of eight bits. A single byte can be used to represent 256 different values.

@@ -1,0 +1,5 @@
+Packet is a collection of data that can be used by computers which need to communicate with each other, usually as part of a network. [8]
+Each packet includes a source and destination as well as the content (or data) being transferred. The structure of the packet depends on the protocol used to transfer it.
+Messages are splitted into variable size of packets.
+
+The next chart, which presents the time and the number of packets relation can be located somwhere between previously described charts (for flows and bytes respectively) in terms of data granularity as its order of magnitude is 10^8. As the amount of bytes transferred through the network from 12:00 untill midnight is relatively constant

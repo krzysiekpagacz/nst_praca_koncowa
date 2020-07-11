@@ -1,0 +1,25 @@
+Transport layer in ISO/OSI model is also knwon as Layer 4. It is responsible for:
+- establishing a temporary communication session between two applications and delivering data between them
+- tracking the individual communication between applications on the source and destination hosts
+- segmenting data 
+- identifying the proper application for each communication stream [2]
+
+The best-known transport protocol of the Internet protocol suite is the Transmission Control Protocol (TCP). It is used for connection-oriented transmissions, whereas the connectionless User Datagram Protocol (UDP) is used for simpler messaging transmissions. TCP is the more complex protocol, due to its stateful design incorporating reliable transmission and data stream services. Together, TCP and UDP comprise essentially all traffic on the internet and are the only protocols implemented in every major operating system. [3]
+
+TCP is best suited to be used for applications that require high reliability where timing is less of a concern.
+- World Wide Web (HTTP, HTTPS)
+- Secure Shell (SSH)
+- File Transfer Protocol (FTP)
+- Email (SMTP, IMAP/POP)
+
+UDP is best suited for applications that require speed and efficiency.
+- VPN tunneling
+- Streaming videos
+- Online games
+- Live broadcasts
+- Domain Name System (DNS)
+- Voice over Internet Protocol (VoIP)
+- Trivial File Transfer Protocol (TFTP) [4]
+
+In the chart below we can see the distribution of bytes between both transport protocols: TCP and UDP. As assumed share of TCP usage is significantly bigger.
+As it was noticed by the scientists from University of Auckland in their work "Observations of UDP to TCP Ratio and PortNumbers" the  ratio (UDP/TCP)  is  rather dependent on application popularity and, consequently, on user choices. the majority of volume, however is dominated by TCP [6]
