@@ -79,23 +79,32 @@ class PDF(FPDF):
         self.image(image_name, x=x, y=y, w=w, h=h)
 
 
-def generate_pdf_file(input_files=None):
-    """
-    function responsible for printing output into pdf file. There is not data manipulation here
-    :param input_files: list object needed only to display which files has been taken into consideration when preparing the report
-    Note! in summary chapter only last line from each file from a given day has been checked
-    :return: pdf file
-    """
+def generate_pdf_file(data):
     pdf = PDF()
     pdf.set_title(TITLE)
     pdf.set_author(AUTHOR)
     try:
         pdf.print_chapter(1, CHAPTER_1_TITLE, CHAPTER_1_INPUT)
-        pdf.chapter_sub_title(1.1, 'Files used for analysis')
-        for file in input_files:
-            pdf.set_font('Times', '', 10)
-            pdf.cell(0, 5, '- ' + file)
+        pdf.chapter_sub_title(1.1, 'Input data analysis')
+        pdf.set_font('Times', '', 10)
+        pdf.cell(0, 5, 'Input data for the analysis has been delivered in a binary form. ')
+        pdf.ln()
+        pdf.cell(0, 5, 'After conversion it to CSV form it have been ' + str(data[0]) + ' rows in total to analysed.')
+        pdf.ln()
+        pdf.cell(0, 5, 'The number of rows with no zero duration time (column td) was: ' + str(data[1]))
+        pdf.ln()
+        pdf.cell(0, 5, 'The total amount of analysed data: ' + str(data[2]) + ' [Tb]')
+        pdf.ln()
+        pdf.cell(0, 5, 'Number of packets: ' + str(data[3]))
+        pdf.ln()
+        pdf.cell(0, 5, 'Based on the router address from column ra it was possible to identify the amount of subntest in the university net.')
+        pdf.ln()
+        pdf.cell(0, 5, 'Below the router IP address has been presented together with the total amount of flows per each of this')
+        pdf.ln()
+        for item in data[4]:
+            pdf.cell(0, 5, 'Router: '+item[0]+' ===> number of flows: '+str(item[1]))
             pdf.ln()
+        pdf.ln()
         pdf.add_page()
         pdf.print_chapter(2, CHAPTER_2_TITLE, CHAPTER_2_INPUT, new_page=False)
         pdf.chapter_sub_title(2.1, 'Collecting network logs')
